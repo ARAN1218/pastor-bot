@@ -1,0 +1,5 @@
+.DS_store
+.env
+make_faiss_vector.py
+read_faiss_vector.py
+__pycache__

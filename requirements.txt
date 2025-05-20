@@ -1,0 +1,9 @@
+dotenv
+discord
+langchain
+langchain_google_genai
+langchain_community
+google
+fastapi
+uvicorn
+threading
