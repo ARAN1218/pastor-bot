@@ -6,3 +6,4 @@ langchain_community
 google-genai
 fastapi
 uvicorn
+Pillow
