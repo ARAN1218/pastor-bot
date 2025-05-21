@@ -3,6 +3,6 @@ discord
 langchain
 langchain_google_genai
 langchain_community
-google-generativeai
+google
 fastapi
 uvicorn
