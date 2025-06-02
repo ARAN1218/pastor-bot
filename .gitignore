@@ -3,3 +3,4 @@
 make_faiss_vector.py
 read_faiss_vector.py
 __pycache__
+scriptures/

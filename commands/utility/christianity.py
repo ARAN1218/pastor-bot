@@ -42,7 +42,7 @@ retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
 PROMPT_TEMPLATE = """
 【システムプロンプト】
 あなたは牧師のGEMINIさんです。あなたは今まで100万人以上の迷える子羊に対して、聖書の教えに基づいて道を示してきました。
-あなたの物腰やわらかい態度に癒された人は星の数ほどいます。
+あなたの物腰やわらかい態度に癒された人は星の数ほどいます。みんながあなたを必要としています。
 
 【ユーザープロンプト】
 ＜指示＞
@@ -51,7 +51,7 @@ PROMPT_TEMPLATE = """
 ＜条件＞
 ・必ず以下の聖書の一節から適切な部分を引用して説教してください。引用するのはただ一節だけにしてください。
 ・引用する箇所については特に条件等はありません。意外な部分を引用して話を組み立てるのもアリです。
-・引用した聖書の一節は必ず〈〉で囲って表示してください。
+・以下の引用した聖書の一節は必ず全体を〈〉で囲って表示してください。
 ・話が長いと聞く方が疲れてしまうため、300字以内で優しく語りかけてください。
 ・挨拶も含めてください。最後の挨拶は「アーメン。」にしてください。
 
@@ -81,10 +81,14 @@ def make_illustration_prompt_ja(bible_scene_ja):
         f"あなたは天才絵描きのGEMINIさんです。"
         f"GEMINIさんが作った作品はその絵をみただけで聖書の一節を思い出せるかのような時代背景を匂わせます。"
         f"\n\n[ユーザープロンプト]"
-        f"次の聖書の一節の情景を、絵本の挿絵のようなイラストで描いてください。"
-        f"スタイル: 水彩画、やわらかい色合い、やさしい雰囲気。"
-        f"禁止事項：情景と関係ないプロンプトや以下の情景に書いてあるテキストをそのまま画像に入れるのはやめてください。あくまでも情景のテキストの意味を満たす絵的なイラストを生成する様にしてください。"
-        f"\n\n情景: {bible_scene_ja}"
+        f"# 指示"
+        f"次の聖書の一節の情景を、絵本の挿絵のようなイラストで描いてください。このプロンプト自体を生成したイラストに描くのはやめてください。\n\n"
+        f"# スタイル\n"
+        f"水彩画、やわらかい色合い、やさしい雰囲気。\nイラストを画面上部分に書き、情景を画面下部分に書いてください。それ以外は何も書かないでくれると助かります。\n\n"
+        f"# 禁止事項\n"
+        f"どうしてもという場合は情景と関係ないプロンプトや以下の情景に書いてあるテキストをそのまま画像に入れてもよいですが、その場合背景と同じ色で塗りつぶしてください。\n\n"
+        f"# 聖書の一節(情景)\n"
+        f"{bible_scene_ja}"
     )
 
 def generate_illustration(prompt_ja):
@@ -195,133 +199,3 @@ class Christianity(commands.Cog):
 
         USER_LAST_FT_DATE_LIST[user_id] = current_date
         USER_FT_CONTENT_LIST[user_id].append(question)
-
-
-
-
-# f"禁止事項：以下の情景に書いてあるテキストをそのまま画像に入れるのはやめてください。あくまでも情景のテキストの意味を満たす絵的なイラストを生成する様にしてください。"
-
-
-
-
-
-
-
-
-
-
-
-
-# import os
-# import datetime
-# from dotenv import load_dotenv
-# import discord
-# from discord.ext import commands
-# from discord import app_commands
-
-# from langchain_google_genai import ChatGoogleGenerativeAI
-# from langchain_community.vectorstores import FAISS
-# from langchain_google_genai import GoogleGenerativeAIEmbeddings
-# from langchain.chains import RetrievalQA
-# from langchain.prompts import PromptTemplate
-
-# # .envからAPIキーをロード
-# load_dotenv()
-# GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-# # LangChain LLM・Embedding・ベクトルストア初期化
-# llm = ChatGoogleGenerativeAI(
-#     model="gemini-1.5-flash",
-#     google_api_key=GEMINI_API_KEY,
-#     temperature=0.7,
-#     max_output_tokens=516,
-# )
-# embeddings = GoogleGenerativeAIEmbeddings(
-#     model="models/embedding-001",
-#     google_api_key=GEMINI_API_KEY
-# )
-# vectorstore = FAISS.load_local(
-#     "bible_faiss_index",
-#     embeddings,
-#     allow_dangerous_deserialization=True
-# )
-# retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-
-# # RetrievalQA用カスタムプロンプト（user_nameはquestionに埋め込む）
-# PROMPT_TEMPLATE = """
-#     あなたは牧師です。キリスト教の教えに基づいて、{question}という相談に答えてください。
-#     必ず以下の聖書の一節から適切な部分を引用し、それに関連付けて300字以内で優しく語りかけてください。
-#     挨拶も含めてください。
-
-#     # 聖書の一節
-#     {context}
-# """
-
-# custom_prompt = PromptTemplate(
-#     template=PROMPT_TEMPLATE,
-#     input_variables=["context", "question"]
-# )
-
-# qa_chain = RetrievalQA.from_chain_type(
-#     llm=llm,
-#     chain_type="stuff",
-#     retriever=retriever,
-#     return_source_documents=False,
-#     chain_type_kwargs={"prompt": custom_prompt},
-#     input_key="question"
-# )
-
-# # ユーザーの相談履歴管理
-# USER_LAST_FT_DATE_LIST = {}
-# USER_FT_CONTENT_LIST = {}
-
-# # Discord Botコグ
-# class Christianity(commands.Cog):
-#     def __init__(self, bot):
-#         self.bot = bot
-
-#     @app_commands.command(
-#         name="christianity",
-#         description="聖書に基づくお悩み相談を実行する"
-#     )
-#     @app_commands.describe(question="相談したい内容を入力してください")
-#     async def christianity(self, interaction: discord.Interaction, question: str):
-#         user_id = str(interaction.user.id)
-#         user_name = interaction.user.display_name
-
-#         # 日付チェック
-#         last_ft_date = USER_LAST_FT_DATE_LIST.get(user_id)
-#         current_date = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))  # JST
-
-#         if last_ft_date and last_ft_date.date() == current_date.date():
-#             if question in USER_FT_CONTENT_LIST.get(user_id, []):
-#                 await interaction.response.send_message(
-#                     "同じ事柄に関するお告げは1日に1回しか出来ません😌", ephemeral=True
-#                 )
-#                 return
-#         else:
-#             USER_FT_CONTENT_LIST[user_id] = []
-
-#         # 受付メッセージ
-#         await interaction.response.send_message(
-#             f"# [キリスト]\nお悩み：{question}\n{user_name}のお告げ🔮は...\n\n"
-#         )
-#         await interaction.followup.send("お告げ中🔮...")
-
-#         # user_nameをquestionに埋め込む
-#         full_question = f"{user_name}さんからの「{question}」"
-
-#         # RetrievalQAチェーンへ渡すdict
-#         inputs = {
-#             "question": full_question
-#         }
-#         response = qa_chain.invoke(inputs)
-
-#         await interaction.followup.send(
-#             f"# [キリスト]\n質問：{question}\n{user_name}のお告げ結果🔮は...\n\n"
-#             f"## [説教]\n{response['result'] if isinstance(response, dict) else response.content}"
-#         )
-
-#         # 履歴更新
-#         USER_LAST_FT_DATE_LIST[user_id] = current_date
-#         USER_FT_CONTENT_LIST[user_id].append(question)

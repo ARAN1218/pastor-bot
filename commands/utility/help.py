@@ -22,13 +22,20 @@ class Tarot(commands.Cog):
             "# 牧師bot🔮へようこそ！\n"
             "このbotは牧師があなたのお悩みに対して説教をしてくれます！\n\n"
             "## 説教コマンドの種類：\n"
-            "**/christianity** … 聖書に基づいて、あなたのお悩み相談をします[学業、金運、恋愛etc…]。\n\n"
+            "**/christianity** … 聖書に基づいて、あなたのお悩み相談をします[学業、金運、恋愛etc…]。\n"
+            "**/islam** … コーランに基づいて、あなたのお悩み相談をします[学業、金運、恋愛etc…]。\n"
+            "**/kojiki** … 古事記に基づいて、あなたのお悩み相談をします[学業、金運、恋愛etc…]。\n"
+            "**/buddhism** … 仏教聖典に基づいて、あなたのお悩み相談をします[学業、金運、恋愛etc…]。\n\n"
             "## お告げのコツ🐦\n"
             "明確な答えを得るには、自分が知りたいことをはっきりさせてお願いすることが大切です。"
             "曖昧なまま相談してしまうと、思ったのと違う内容について説教されてしまうかもしれません。"
             "まず「**自分は何が困っているのか**」をはっきり言語化することで良い質問に近づくことができるでしょう。\n"
             "ex.) 友人と喧嘩してしまいました。仲直りしたいです。\n\n"
-            "参考文献：（編集中）"
+            "参考文献：\n"
+            "旧約聖書・新約聖書：https://www.bible.gr.jp/bible/kjv/index.html\n"
+            "コーラン：https://www.islamic-information.org/islamic-texts/quran/index.html\n"
+            "古事記：https://www.aozora.gr.jp/cards/001518/card51732.html#download\n"
+            "仏教聖典：https://bdk-seiten.com/scripture-download.php\n"
         )
 
         await interaction.response.send_message(
